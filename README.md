@@ -14,12 +14,14 @@ A Django-based microservice that allows users to shorten URLs, redirect using sh
     {
       "original_url": "https://example.com"
     }
+    ```
 
   - **Response:**
   ```json
     {
       "shortened_url": "/api/abc123"
     }
+  ```
 
 ### GET `/api/<shortened_code>`
   Redirect to the original URL.
@@ -40,12 +42,14 @@ A Django-based microservice that allows users to shorten URLs, redirect using sh
     "created_at": "2025-07-01T12:00:00Z",
     "last_accessed": "2025-07-01T13:00:00Z"
   }
+  ```
 
 ## How to Run
-```code
-- Make Sure Docker is installed then run:
-  docker-compose build
-  docker-compose up
+  ```code
+  - Make Sure Docker is installed then run:
+    docker-compose build
+    docker-compose up
+  ```
 
 ### Run Tests:
-docker-compose run --rm app sh -c "/py/bin/python manage.py test"
+  docker-compose run --rm app sh -c "/py/bin/python manage.py test"
