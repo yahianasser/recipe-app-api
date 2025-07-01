@@ -45,11 +45,11 @@ A Django-based microservice that allows users to shorten URLs, redirect using sh
   ```
 
 ## How to Run
-  ```code
   - Make Sure Docker is installed then run:
+  ```code
     docker-compose build
     docker-compose up
   ```
 
 ### Run Tests:
-  docker-compose run --rm app sh -c "/py/bin/python manage.py test"
+  ```docker-compose run --rm app sh -c "/py/bin/python manage.py test"```
