@@ -7,6 +7,7 @@ from django.utils import timezone
 from .models import Url
 from django.core.cache import cache
 from django.core.management.base import BaseCommand
+from rest_framework.throttling import AnonRateThrottle
 
 baseCommand = BaseCommand()
 
@@ -19,6 +20,7 @@ baseCommand = BaseCommand()
     }}}
 )
 class ShortenUrlView(APIView):
+    throttle_class = [AnonRateThrottle]
     def post(self, request):
         try:
             original_url = request.data.get("original_url")
