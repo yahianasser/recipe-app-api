@@ -5,7 +5,10 @@ from rest_framework.exceptions import NotFound
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from django.utils import timezone
 from .models import Url
+from django.core.cache import cache
+from django.core.management.base import BaseCommand
 
+baseCommand = BaseCommand()
 
 @extend_schema(
     request={"application/json": {"type": "object", "properties": {
@@ -46,7 +49,14 @@ class ShortenUrlView(APIView):
 class RedirectToOriginalView(APIView):
     def get(self, request, shortened_code):
         try:
-            url = Url.objects.get(shortened_code=shortened_code)
+            key = f"url:{shortened_code}"
+            url = cache.get(key)
+            if not url:
+                url = Url.objects.get(shortened_code=shortened_code)
+                cache.set(key, url, timeout=60 * 60)
+                baseCommand.stdout.write('Cache Miss')
+            else:
+                baseCommand.stdout.write('Cache Hit')
             url.clicks += 1
             url.last_accessed = timezone.now()
             url.save(update_fields=["clicks", "last_accessed"])
@@ -68,13 +78,21 @@ class RedirectToOriginalView(APIView):
 class UrlStatsView(APIView):
     def get(self, request, shortened_code):
         try:
-            url = Url.objects.get(shortened_code=shortened_code)
-            return Response({
-                "original_url": url.original_url,
-                "shortened_code": url.shortened_code,
-                "clicks": url.clicks,
-                "created_at": url.created_at,
-                "last_accessed": url.last_accessed
-            })
+            key = f"stats:{shortened_code}"
+            stats = cache.get(key)
+            if not stats:
+                url = Url.objects.get(shortened_code=shortened_code)
+                baseCommand.stdout.write('Cache Miss')
+                stats = {
+                    "original_url": url.original_url,
+                    "shortened_code": url.shortened_code,
+                    "clicks": url.clicks,
+                    "created_at": url.created_at,
+                    "last_accessed": url.last_accessed
+                }
+                cache.set(key, stats, timeout=60 * 5)
+            else:
+                baseCommand.stdout.write('Cache Hit')
+            return Response(stats)
         except Url.DoesNotExist:
             raise NotFound("Shortened URL not found")

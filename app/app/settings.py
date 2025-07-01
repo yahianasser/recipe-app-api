@@ -137,3 +137,12 @@ URL_MODEL = 'core.Url'
 REST_FRAMEWORK = {
   'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",  # for development
+        # For production use Redis:
+        # "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        # "LOCATION": "redis://127.0.0.1:6379/1",
+    }
+}
