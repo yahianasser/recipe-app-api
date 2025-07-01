@@ -7,32 +7,32 @@ A Django-based microservice that allows users to shorten URLs, redirect using sh
 ## API Endpoints
 
 ### POST `/api/shorten`
-Create a shortened URL.
+  Create a shortened URL.
 
-- **Request Body:**
+  - **Request Body:**
+    ```json
+    {
+      "original_url": "https://example.com"
+    }
+
+  - **Response:**
   ```json
-  {
-    "original_url": "https://example.com"
-  }
-
-- **Response:**
-```json
-  {
-    "shortened_url": "/api/abc123"
-  }
+    {
+      "shortened_url": "/api/abc123"
+    }
 
 ### GET `/api/<shortened_code>`
 Redirect to the original URL.
 
-Response:
+- **Response:**
 
 HTTP 302 Redirect to the original URL
 
 ### GET `/api/stats/<shortened_code>`
 Retrieve usage statistics for a shortened URL.
 
-Response:
-
+- **Response:**
+```json
 {
   "original_url": "https://example.com",
   "shortened_code": "abc123",
@@ -42,6 +42,7 @@ Response:
 }
 
 ## How to Run
+```code
 - Make Sure Docker is installed then run:
   docker-compose build
   docker-compose up
