@@ -5,17 +5,21 @@ import random
 
 class UrlManager(models.Manager):
   def create_url(self, original_url):
-    shortened_code = self.generate_unique_code()
     if not original_url or original_url == '':
-      raise ValueError('a Url must be entered.')
+      raise ValueError('A URL must be entered.')
+
+    shortened_code = self.generate_unique_code()
     return self.create(original_url=original_url, shortened_code=shortened_code)
 
-  def generate_unique_code(self, length=6):
+  def generate_unique_code(self, length=6, max_retries=10):
     characters = string.ascii_letters + string.digits
-    while True:
-      code = ''.join(random.choices(characters, k=length))
-      if not self.filter(shortened_code=code).exists():
-        return code
+    for _ in range(max_retries):
+        code = ''.join(random.choices(characters, k=length))
+        if not self.filter(shortened_code=code).exists():
+            return code
+    raise Exception("Could not generate a unique code after 10 attempts")
+
+
 
 class Url(models.Model):
     url_id = models.AutoField(primary_key=True)
