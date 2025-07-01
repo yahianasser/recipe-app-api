@@ -22,24 +22,24 @@ A Django-based microservice that allows users to shorten URLs, redirect using sh
     }
 
 ### GET `/api/<shortened_code>`
-Redirect to the original URL.
+  Redirect to the original URL.
 
-- **Response:**
+  - **Response:**
 
-HTTP 302 Redirect to the original URL
+  HTTP 302 Redirect to the original URL
 
 ### GET `/api/stats/<shortened_code>`
-Retrieve usage statistics for a shortened URL.
+  Retrieve usage statistics for a shortened URL.
 
-- **Response:**
-```json
-{
-  "original_url": "https://example.com",
-  "shortened_code": "abc123",
-  "clicks": 12,
-  "created_at": "2025-07-01T12:00:00Z",
-  "last_accessed": "2025-07-01T13:00:00Z"
-}
+  - **Response:**
+  ```json
+  {
+    "original_url": "https://example.com",
+    "shortened_code": "abc123",
+    "clicks": 12,
+    "created_at": "2025-07-01T12:00:00Z",
+    "last_accessed": "2025-07-01T13:00:00Z"
+  }
 
 ## How to Run
 ```code
