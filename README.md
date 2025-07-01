@@ -15,7 +15,7 @@ Create a shortened URL.
     "original_url": "https://example.com"
   }
 
-Response:
+- **Response:**
 ```json
   {
     "shortened_url": "/api/abc123"
